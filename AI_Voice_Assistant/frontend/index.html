@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Voxa AI — Intelligent Voice Assistant & Android Automation</title>
+    <meta name="description" content="Voxa AI is a next-generation multimodal AI Voice Assistant with multilingual speech recognition, intelligent device automation, and native Android WebView bridge integration.">
+    <meta name="theme-color" content="#6C4AB6">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+    <!-- ====================================================================
+         1. SPLASH SCREEN
+         ==================================================================== -->
+    <div id="page-splash" class="active">
+        <div class="splash-content">
+            <div class="splash-logo-wrap">
+                <div class="splash-ring splash-ring-1"></div>
+                <div class="splash-ring splash-ring-2"></div>
+                <div class="splash-icon">🎙️</div>
+            </div>
+            <h1 class="splash-title">VOXA AI</h1>
+            <p class="splash-tagline" data-i18n="tagline">Your Intelligent Voice Assistant</p>
+            <p class="splash-sub" data-i18n="splashSubtitle">Next-Generation Multimodal Voice AI & Device Automation</p>
+            <button id="skip-splash-btn" class="splash-skip-btn" onclick="dismissSplashScreen()" data-i18n="startNow">Get Started</button>
+        </div>
+    </div>
+
+    <!-- Immediate Splash Screen Dismissal Failsafe -->
+    <script>
+        function dismissSplashScreen() {
+            var splash = document.getElementById("page-splash");
+            if (splash) {
+                splash.classList.remove("active");
+                splash.style.display = "none";
+                splash.style.visibility = "hidden";
+                splash.style.opacity = "0";
+                splash.style.pointerEvents = "none";
+            }
+            if (window.Navigation && typeof window.Navigation.navigateToPage === "function") {
+                window.Navigation.navigateToPage("dashboard");
+            }
+        }
+        window.splashTimerId = setTimeout(dismissSplashScreen, 2200);
+    </script>
+
+    <!-- ====================================================================
+         MAIN APPLICATION SHELL
+         ==================================================================== -->
+    <!-- MOBILE SIDE DRAWER & BACKDROP -->
+    <div id="mobile-drawer-backdrop" class="mobile-drawer-backdrop" aria-hidden="true"></div>
+    <aside id="mobile-side-drawer" class="mobile-side-drawer" aria-hidden="true">
+        <div class="drawer-header">
+            <div class="drawer-brand">
+                <div class="brand-icon-box" style="width: 38px; height: 38px; font-size: 16px;">🎙️</div>
+                <div class="brand-name" style="font-size: 20px;">VOXA AI</div>
+            </div>
+            <button id="close-drawer-btn" class="btn-icon" aria-label="Close menu">✕</button>
+        </div>
+        <nav class="drawer-nav">
+            <button class="nav-link active" data-nav-target="dashboard">
+                <span class="nav-icon">📊</span>
+                <span class="nav-label" data-i18n="navDashboard">Dashboard</span>
+            </button>
+            <button class="nav-link" data-nav-target="voice">
+                <span class="nav-icon">🎙️</span>
+                <span class="nav-label" data-i18n="navVoice">Voice Assistant</span>
+            </button>
+            <button class="nav-link" data-nav-target="contacts">
+                <span class="nav-icon">👥</span>
+                <span class="nav-label" data-i18n="navContacts">Contacts</span>
+            </button>
+            <button class="nav-link" data-nav-target="history">
+                <span class="nav-icon">📜</span>
+                <span class="nav-label" data-i18n="navHistory">History</span>
+            </button>
+            <button class="nav-link" data-nav-target="favorites">
+                <span class="nav-icon">⭐</span>
+                <span class="nav-label" data-i18n="navFavorites">Favorites</span>
+            </button>
+            <button class="nav-link" data-nav-target="chat">
+                <span class="nav-icon">💬</span>
+                <span class="nav-label" data-i18n="navChat">AI Chat</span>
+            </button>
+            <button class="nav-link" data-nav-target="settings">
+                <span class="nav-icon">⚙️</span>
+                <span class="nav-label" data-i18n="navSettings">Settings</span>
+            </button>
+            <button class="nav-link" data-nav-target="help">
+                <span class="nav-icon">💡</span>
+                <span class="nav-label" data-i18n="navHelp">Help & About</span>
+            </button>
+        </nav>
+    </aside>
+
+    <div class="app-shell">
+
+        <!-- DESKTOP SIDEBAR -->
+        <aside class="app-sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon-box">🎙️</div>
+                <div>
+                    <div class="brand-name">VOXA AI</div>
+                    <div class="brand-tag">Intelligent Voice</div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <button class="nav-link active" data-nav-target="dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-label" data-i18n="navDashboard">Dashboard</span>
+                </button>
+                <button class="nav-link" data-nav-target="voice">
+                    <span class="nav-icon">🎙️</span>
+                    <span class="nav-label" data-i18n="navVoice">Voice Assistant</span>
+                </button>
+                <button class="nav-link" data-nav-target="contacts">
+                    <span class="nav-icon">👥</span>
+                    <span class="nav-label" data-i18n="navContacts">Contacts</span>
+                </button>
+                <button class="nav-link" data-nav-target="history">
+                    <span class="nav-icon">📜</span>
+                    <span class="nav-label" data-i18n="navHistory">History</span>
+                </button>
+                <button class="nav-link" data-nav-target="favorites">
+                    <span class="nav-icon">⭐</span>
+                    <span class="nav-label" data-i18n="navFavorites">Favorites</span>
+                </button>
+                <button class="nav-link" data-nav-target="chat">
+                    <span class="nav-icon">💬</span>
+                    <span class="nav-label" data-i18n="navChat">AI Chat</span>
+                </button>
+                <button class="nav-link" data-nav-target="settings">
+                    <span class="nav-icon">⚙️</span>
+                    <span class="nav-label" data-i18n="navSettings">Settings</span>
+                </button>
+                <button class="nav-link" data-nav-target="help">
+                    <span class="nav-icon">💡</span>
+                    <span class="nav-label" data-i18n="navHelp">Help & About</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-user-card">
+                    <div class="user-avatar-small">AR</div>
+                    <div class="user-info-text">
+                        <div id="user-profile-name" class="user-name-label">Alex Rivera</div>
+                        <div id="user-profile-email" class="user-role-label">alex.rivera@voxa.ai</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN VIEWPORT -->
+        <div class="app-viewport">
+
+            <!-- TOPBAR -->
+            <header class="app-topbar">
+                <div class="topbar-left">
+                    <button id="mobile-hamburger-btn" class="btn-hamburger" aria-label="Open Navigation Menu">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                    </button>
+                    <div class="mobile-header-brand">
+                        <span class="brand-icon-box" style="width: 32px; height: 32px; font-size: 14px;">🎙️</span>
+                        <span class="brand-name" style="font-size: 18px; margin-left: 6px;">VOXA AI</span>
+                    </div>
+                    <div class="ai-status-badge">
+                        <span class="status-dot"></span>
+                        <span id="ai-status-pill" data-i18n="aiStatusOnline">AI Engine Online</span>
+                    </div>
+                </div>
+
+                <div class="topbar-right">
+                    <div class="topbar-datetime">
+                        <span id="dashboard-date" class="topbar-date">Loading date...</span>
+                        <span id="dashboard-time" class="topbar-time">--:--</span>
+                    </div>
+
+                    <div class="topbar-control-group">
+                        <!-- Language Selector -->
+                        <select id="top-bar-language-select" class="select-styled" title="Change Language">
+                            <option value="en">English 🇬🇧</option>
+                            <option value="hi">हिन्दी (Hindi) 🇮🇳</option>
+                            <option value="gu">ગુજરાતી (Gujarati) 🇮🇳</option>
+                        </select>
+
+                        <!-- Theme Toggle Button -->
+                        <button id="top-theme-toggle" class="btn-icon-top" title="Toggle Light / Dark Mode">
+                            🌓
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- MAIN CONTENT AREA -->
+            <main class="main-content-area">
+
+                <!-- ========================================================
+                     2. HOME / AI DASHBOARD PAGE
+                     ======================================================== -->
+                <section id="page-dashboard" class="voxa-page active">
+                    <div class="dashboard-hero-grid">
+                        <div class="dash-mic-hero glass-card">
+                            <div class="dash-hero-info">
+                                <h2 id="dashboard-greeting-text" class="dash-greeting-h2">Good morning, Alex</h2>
+                                <p class="dash-greeting-desc" data-i18n="tagline">Your Intelligent Voice Assistant is active and listening for your commands.</p>
+                                <button class="btn-hero-speak trigger-voice-btn">
+                                    <span>🎙️</span>
+                                    <span data-i18n="tapToSpeak">Tap to Speak</span>
+                                </button>
+                            </div>
+                            <div class="hero-mic-graphic trigger-voice-btn" title="Tap to Speak">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line><line x1="8" y1="22" x2="16" y2="22"></line></svg>
+                            </div>
+                        </div>
+
+                        <!-- Quick Favorite Shortcuts Card -->
+                        <div class="dash-sub-card glass-card">
+                            <div class="section-heading-row" style="margin-top: 0;">
+                                <h3 class="section-title" data-i18n="favoriteCommands">Favorite Shortcuts</h3>
+                                <button class="btn-icon" data-nav-target="favorites" title="View all">➔</button>
+                            </div>
+                            <div id="dashboard-favorites-container" class="dashboard-fav-list" style="display: flex; flex-direction: column; gap: 10px;">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions Grid -->
+                    <div class="section-heading-row">
+                        <h3 class="section-title" data-i18n="quickActions">Quick Actions</h3>
+                    </div>
+                    <div class="quick-actions-grid">
+                        <div id="qa-call" class="qa-card glass-card" onclick="Actions.openCallModal()" role="button" tabindex="0" aria-label="Call Contact">
+                            <div class="qa-icon-wrap qa-purple">📞</div>
+                            <div>
+                                <div class="qa-label" data-i18n="qaCall">Call Contact</div>
+                                <div class="qa-hint">Choose & Call Contact</div>
+                            </div>
+                        </div>
+                        <div id="qa-youtube" class="qa-card glass-card" onclick="Actions.openYouTube()" role="button" tabindex="0" aria-label="Open YouTube">
+                            <div class="qa-icon-wrap qa-cyan">▶️</div>
+                            <div>
+                                <div class="qa-label" data-i18n="qaYouTube">Open YouTube</div>
+                                <div class="qa-hint">Play & Search Videos</div>
+                            </div>
+                        </div>
+                        <div id="qa-google" class="qa-card glass-card" onclick="Actions.searchGoogle()" role="button" tabindex="0" aria-label="Search Google">
+                            <div class="qa-icon-wrap qa-orange">🔍</div>
+                            <div>
+                                <div class="qa-label" data-i18n="qaGoogle">Search Google</div>
+                                <div class="qa-hint">Instant Web Query</div>
+                            </div>
+                        </div>
+                        <div id="qa-message" class="qa-card glass-card" onclick="Actions.openMessageModal()" role="button" tabindex="0" aria-label="Send Message">
+                            <div class="qa-icon-wrap qa-purple">💬</div>
+                            <div>
+                                <div class="qa-label" data-i18n="qaMessage">Send Message</div>
+                                <div class="qa-hint">WhatsApp / SMS</div>
+                            </div>
+                        </div>
+                        <div id="qa-maps" class="qa-card glass-card" onclick="Actions.openMaps()" role="button" tabindex="0" aria-label="Open Maps">
+                            <div class="qa-icon-wrap qa-cyan">🗺️</div>
+                            <div>
+                                <div class="qa-label" data-i18n="qaMaps">Open Maps</div>
+                                <div class="qa-hint">Search & Navigation</div>
+                            </div>
+                        </div>
+                        <div id="qa-reminder" class="qa-card glass-card" onclick="Actions.setReminder('Quick Reminder', 10)" role="button" tabindex="0" aria-label="Set Reminder">
+                            <div class="qa-icon-wrap qa-orange">⏰</div>
+                            <div>
+                                <div class="qa-label" data-i18n="qaReminder">Set Reminder</div>
+                                <div class="qa-hint">Timers & Alerts</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lower Split: Recent Commands & Contacts -->
+                    <div class="dash-lower-grid">
+                        <div class="dash-sub-card glass-card">
+                            <div class="section-heading-row" style="margin-top: 0;">
+                                <h3 class="section-title" data-i18n="recentCommands">Recent Voice Commands</h3>
+                                <button class="btn-icon" data-nav-target="history" title="View all">➔</button>
+                            </div>
+                            <div id="dashboard-recent-commands" style="display: flex; flex-direction: column; gap: 8px;">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+
+                        <div class="dash-sub-card glass-card">
+                            <div class="section-heading-row" style="margin-top: 0;">
+                                <h3 class="section-title" data-i18n="recentContacts">Recent Contacts</h3>
+                                <button class="btn-icon" data-nav-target="contacts" title="View all">➔</button>
+                            </div>
+                            <div id="dashboard-recent-contacts" class="dash-contacts-carousel">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========================================================
+                     3. VOICE ASSISTANT PAGE
+                     ======================================================== -->
+                <section id="page-voice" class="voxa-page">
+                    <div class="voice-assistant-stage">
+
+                        <!-- Sound Wave Visualizer Canvas -->
+                        <div class="visualizer-box">
+                            <canvas id="voice-wave-canvas"></canvas>
+                        </div>
+
+                        <!-- Central Animated Microphone -->
+                        <div id="voice-mic-wrapper" class="voice-mic-wrapper state-idle">
+                            <div class="voice-mic-halo"></div>
+                            <button id="main-voice-mic" class="voice-mic-button" title="Tap to Speak">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line><line x1="8" y1="22" x2="16" y2="22"></line></svg>
+                            </button>
+                        </div>
+
+                        <!-- Voice State Text -->
+                        <div id="voice-state-text" class="voice-state-banner" data-i18n="micIdle">
+                            Tap the microphone to speak
+                        </div>
+
+                        <!-- Live Transcript Display -->
+                        <div class="voice-transcript-card glass-card">
+                            <div class="transcript-label">Speech Transcript</div>
+                            <div id="voice-transcript-text" class="transcript-body" data-i18n="transcriptPlaceholder">
+                                Your transcribed voice command will appear here...
+                            </div>
+                        </div>
+
+                        <!-- AI Response Box -->
+                        <div id="voice-response-container" class="voice-response-card" style="display: none;">
+                            <div class="response-label">Voxa AI Response</div>
+                            <div id="voice-response-text" class="response-body"></div>
+
+                            <div id="voice-audio-controls" class="audio-controls-row">
+                                <button id="btn-resp-play" class="btn-audio-ctl" data-i18n="playAudio">Play</button>
+                                <button id="btn-resp-pause" class="btn-audio-ctl" data-i18n="pauseAudio">Pause</button>
+                                <button id="btn-resp-stop" class="btn-audio-ctl" data-i18n="stopAudio">Stop</button>
+                                <label style="font-size: 12px; color: var(--text-muted); margin-left: auto;">
+                                    Speed:
+                                    <input id="resp-voice-speed" type="range" min="0.5" max="1.5" step="0.1" value="1.0" style="vertical-align: middle; width: 80px;">
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Suggested Prompts Chips -->
+                        <div class="voice-suggestions-wrap">
+                            <div class="suggestions-title" data-i18n="trySaying">Try saying:</div>
+                            <div class="chips-row">
+                                <span class="chip" onclick="CommandDispatcher.processCommand('Call Mom')">"Call Mom"</span>
+                                <span class="chip" onclick="CommandDispatcher.processCommand('Open YouTube')">"Open YouTube"</span>
+                                <span class="chip" onclick="CommandDispatcher.processCommand('Search YouTube for Python tutorial')">"Search YouTube for Python"</span>
+                                <span class="chip" onclick="CommandDispatcher.processCommand('Navigate to Ahmedabad')">"Navigate to Ahmedabad"</span>
+                                <span class="chip" onclick="CommandDispatcher.processCommand('મમ્મીને ફોન કરો')">"મમ્મીને ફોન કરો"</span>
+                                <span class="chip" onclick="CommandDispatcher.processCommand('Rahul ko message karo')">"Rahul ko message karo"</span>
+                                <span class="chip" onclick="CommandDispatcher.processCommand('What is the weather today?')">"What is the weather today?"</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- ========================================================
+                     4. CONTACTS PAGE
+                     ======================================================== -->
+                <section id="page-contacts" class="voxa-page">
+                    <div class="page-header-row">
+                        <div>
+                            <h2 class="page-title" data-i18n="contactsTitle">Contacts Directory</h2>
+                            <p class="page-subtitle">Voice-activated calling & messaging with Android Bridge sync</p>
+                        </div>
+                        <div class="contacts-btn-group">
+                            <button id="sync-contacts-btn" class="btn-secondary-action">
+                                <span>🔄</span>
+                                <span data-i18n="syncDeviceContacts">Sync Device Contacts</span>
+                            </button>
+                            <button id="open-add-contact-modal-btn" class="btn-primary-action">
+                                <span>➕</span>
+                                <span data-i18n="addNewContact">Add Contact</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="contacts-controls-bar">
+                        <div class="search-input-wrap">
+                            <input id="contacts-search-input" class="input-styled" type="text" placeholder="Search contacts by name or number..." data-i18n-placeholder="searchContacts">
+                        </div>
+                        <div class="contacts-filter-tabs">
+                            <button id="filter-all-contacts" class="filter-tab active" data-i18n="allContacts">All Contacts</button>
+                            <button id="filter-fav-contacts" class="filter-tab" data-i18n="favoriteContacts">Favorites Only</button>
+                        </div>
+                    </div>
+
+                    <div id="contacts-list-container" class="contacts-list-grid">
+                        <!-- Populated dynamically -->
+                    </div>
+                </section>
+
+                <!-- ========================================================
+                     5. COMMAND HISTORY PAGE
+                     ======================================================== -->
+                <section id="page-history" class="voxa-page">
+                    <div class="page-header-row">
+                        <div>
+                            <h2 class="page-title" data-i18n="historyTitle">Command Activity History</h2>
+                            <p class="page-subtitle">Audited log of voice actions, web queries, and device operations</p>
+                        </div>
+                        <button id="clear-history-btn" class="btn-secondary-action">
+                            <span>🗑️</span>
+                            <span data-i18n="clearHistory">Clear All History</span>
+                        </button>
+                    </div>
+
+                    <div class="history-controls-bar">
+                        <div class="search-input-wrap">
+                            <input id="history-search-input" class="input-styled" type="text" placeholder="Search history records..." data-i18n-placeholder="searchHistory">
+                        </div>
+                        <select id="history-category-select" class="select-styled">
+                            <option value="all" data-i18n="allCategories">All Categories</option>
+                            <option value="phone" data-i18n="catPhone">Phone Call</option>
+                            <option value="message" data-i18n="catMessage">Message</option>
+                            <option value="app" data-i18n="catApp">App Launch</option>
+                            <option value="web" data-i18n="catWeb">Web Search</option>
+                            <option value="system" data-i18n="catSystem">System & Device</option>
+                            <option value="ai" data-i18n="catAI">AI Knowledge</option>
+                        </select>
+                    </div>
+
+                    <div id="history-list-container" class="history-list">
+                        <!-- Populated dynamically -->
+                    </div>
+                </section>
+
+                <!-- ========================================================
+                     6. FAVORITES PAGE
+                     ======================================================== -->
+                <section id="page-favorites" class="voxa-page">
+                    <div class="page-header-row">
+                        <div>
+                            <h2 class="page-title" data-i18n="favoritesTitle">Quick Execution Shortcuts</h2>
+                            <p class="page-subtitle">One-tap execution cards for frequently used voice commands</p>
+                        </div>
+                        <button id="add-favorite-btn" class="btn-primary-action">
+                            <span>➕</span>
+                            <span data-i18n="addFavorite">Add Shortcut</span>
+                        </button>
+                    </div>
+
+                    <div id="favorites-grid-container" class="favorites-grid">
+                        <!-- Populated dynamically -->
+                    </div>
+                </section>
+
+                <!-- ========================================================
+                     7. AI CHAT PAGE
+                     ======================================================== -->
+                <section id="page-chat" class="voxa-page">
+                    <div class="page-header-row">
+                        <div>
+                            <h2 class="page-title" data-i18n="chatTitle">Conversational AI Studio</h2>
+                            <p class="page-subtitle" data-i18n="chatSubtitle">Chat with Voxa AI using voice or text</p>
+                        </div>
+                        <button id="clear-chat-btn" class="btn-secondary-action" data-i18n="clearChat">
+                            Clear Conversation
+                        </button>
+                    </div>
+
+                    <div class="chat-studio-container glass-card">
+                        <div id="chat-messages-container" class="chat-messages-scroll">
+                            <!-- Populated dynamically -->
+                        </div>
+
+                        <form id="chat-input-form" class="chat-input-bar-wrap">
+                            <button id="chat-mic-btn" type="button" class="btn-icon" title="Dictate with voice">🎙️</button>
+                            <input id="chat-text-input" class="chat-input-field" type="text" placeholder="Ask Voxa anything (e.g. 'Explain Quantum Computing' or 'How do I cook pasta?')..." data-i18n-placeholder="chatPlaceholder">
+                            <button type="submit" class="btn-send-chat" title="Send message">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                            </button>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- ========================================================
+                     8. SETTINGS PAGE
+                     ======================================================== -->
+                <section id="page-settings" class="voxa-page">
+                    <div class="page-header-row">
+                        <div>
+                            <h2 class="page-title" data-i18n="settingsTitle">Voxa System Settings</h2>
+                            <p class="page-subtitle">Configure speech engines, automation policies, permissions, and theme</p>
+                        </div>
+                    </div>
+
+                    <div class="settings-grid">
+                        <!-- Account Section -->
+                        <div class="settings-card glass-card">
+                            <h3 class="settings-card-title">
+                                <span>👤</span>
+                                <span data-i18n="secAccount">Account & Profile</span>
+                            </h3>
+                            <div class="settings-row">
+                                <div class="settings-label-wrap">
+                                    <div class="settings-label">User Name</div>
+                                    <div class="settings-desc">Alex Rivera</div>
+                                </div>
+                                <span id="user-auth-badge" class="badge badge-orange">Guest Demo Mode</span>
+                            </div>
+                            <div class="settings-row">
+                                <div class="settings-label-wrap">
+                                    <div class="settings-label">Firebase Cloud Sync</div>
+                                    <div class="settings-desc">Sync history, contacts & favorites across devices</div>
+                                </div>
+                                <button class="btn-secondary-action" onclick="VoxaFirebase.signInWithGoogle()" style="padding: 6px 14px; font-size: 12px;">Connect Google</button>
+                            </div>
+                        </div>
+
+                        <!-- Voice Settings -->
+                        <div class="settings-card glass-card">
+                            <h3 class="settings-card-title">
+                                <span>🎙️</span>
+                                <span data-i18n="secVoice">Voice & Speech Engine</span>
+                            </h3>
+                            <div class="settings-row">
+                                <div class="settings-label-wrap">
+                                    <div class="settings-label" data-i18n="lblLanguage">Interface & Speech Language</div>
+                                    <div class="settings-desc">Recognition & UI localization</div>
+                                </div>
+                                <select id="settings-language-select" class="select-styled">
+                                    <option value="en">English 🇬🇧</option>
+                                    <option value="hi">हिन्दी (Hindi) 🇮🇳</option>
+                                    <option value="gu">ગુજરાતી (Gujarati) 🇮🇳</option>
+                                </select>
+                            </div>
+                            <div class="settings-row">
+                                <div class="settings-label-wrap">
+                                    <div class="settings-label" data-i18n="lblVoiceSelect">Synthesizer Voice</div>
+                                    <div class="settings-desc">Select text-to-speech audio timbre</div>
+                                </div>
+                                <select id="settings-voice-select" class="select-styled" style="max-width: 160px;">
+                                    <option>Default Voice</option>
+                                </select>
+                            </div>
+                            <div class="settings-row">
+                                <div class="settings-label-wrap">
+                                    <div class="settings-label" data-i18n="lblAutoSpeak">Auto-Speak Responses</div>
+                                    <div class="settings-desc">Automatically read aloud answers via TTS</div>
+                                </div>
+                                <label class="switch">
+                                    <input id="settings-auto-speak-toggle" type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Assistant Automation -->
+                        <div class="settings-card glass-card">
+                            <h3 class="settings-card-title">
+                                <span>⚙️</span>
+                                <span data-i18n="secAssistant">Assistant Automation</span>
+                            </h3>
+                            <div class="settings-row">
+                                <div class="settings-label-wrap">
+                                    <div class="settings-label" data-i18n="lblCallConfirm">Confirmation Before Calling</div>
+                                    <div class="settings-desc">Show confirmation dialog before dialer opens</div>
+                                </div>
+                                <label class="switch">
+                                    <input id="settings-confirm-call-toggle" type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="settings-row">
+                                <div class="settings-label-wrap">
+                                    <div class="settings-label" data-i18n="lblMsgConfirm">Confirmation Before Messaging</div>
+                                    <div class="settings-desc">Review SMS/WhatsApp text before dispatch</div>
+                                </div>
+                                <label class="switch">
+                                    <input id="settings-confirm-msg-toggle" type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Appearance & Privacy -->
+                        <div class="settings-card glass-card">
+                            <h3 class="settings-card-title">
+                                <span>🎨</span>
+                                <span data-i18n="secAppearance">Appearance & Theme</span>
+                            </h3>
+                            <div class="settings-row">
+                                <div class="settings-label-wrap">
+                                    <div class="settings-label" data-i18n="lblTheme">Color Theme</div>
+                                    <div class="settings-desc">Toggle between futuristic dark and clean light</div>
+                                </div>
+                                <select id="settings-theme-toggle" class="select-styled">
+                                    <option value="dark" data-i18n="themeDark">Dark Cyber</option>
+                                    <option value="light" data-i18n="themeLight">Clean Light</option>
+                                </select>
+                            </div>
+                            <div class="settings-row">
+                                <div class="settings-label-wrap">
+                                    <div class="settings-label" data-i18n="clearAllData">Reset All Local Data</div>
+                                    <div class="settings-desc">Clear cached contacts, history, and settings</div>
+                                </div>
+                                <button id="btn-reset-local-data" class="btn-secondary-action" style="padding: 6px 14px; font-size: 12px; color: #EF4444; border-color: #EF4444;">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========================================================
+                     9. HELP / ABOUT PAGE
+                     ======================================================== -->
+                <section id="page-help" class="voxa-page">
+                    <div class="page-header-row">
+                        <div>
+                            <h2 class="page-title" data-i18n="helpTitle">Help, Commands & System Diagnostics</h2>
+                            <p class="page-subtitle">Multilingual speech syntax cheat sheet and Android Bridge hardware inspector</p>
+                        </div>
+                    </div>
+
+                    <div class="help-grid">
+                        <!-- Commands Cheat Sheet -->
+                        <div class="settings-card glass-card">
+                            <h3 class="settings-card-title">
+                                <span>📖</span>
+                                <span data-i18n="commandsCheatSheet">Voice Commands Cheat Sheet</span>
+                            </h3>
+                            <table class="cheat-sheet-table">
+                                <thead>
+                                    <tr>
+                                        <th>Action</th>
+                                        <th>English</th>
+                                        <th>हिन्दी (Hindi)</th>
+                                        <th>ગુજરાતી (Gujarati)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Call Contact</strong></td>
+                                        <td>"Call Mom"</td>
+                                        <td>"Mummy ko call karo"</td>
+                                        <td>"મમ્મીને ફોન કરો"</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>YouTube</strong></td>
+                                        <td>"Open YouTube"</td>
+                                        <td>"YouTube kholo"</td>
+                                        <td>"યુટ્યુબ ખોલો"</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Video Search</strong></td>
+                                        <td>"Search YouTube for Python"</td>
+                                        <td>"YouTube par Python khojo"</td>
+                                        <td>"યુટ્યુબ પર પાયથોન શોધો"</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>WhatsApp</strong></td>
+                                        <td>"Send WhatsApp to Rahul"</td>
+                                        <td>"Rahul ko WhatsApp karo"</td>
+                                        <td>"રાહુલને વ્હોટ્સએપ કરો"</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Google Search</strong></td>
+                                        <td>"Search Google for Django"</td>
+                                        <td>"Google par Django search karo"</td>
+                                        <td>"ગૂગલ પર પાયથોન શોધો"</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Maps Navigation</strong></td>
+                                        <td>"Navigate to Ahmedabad"</td>
+                                        <td>"Ahmedabad ka rasta dikhao"</td>
+                                        <td>"અમદાવાદનો રસ્તો બતાવો"</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Weather</strong></td>
+                                        <td>"What is the weather today?"</td>
+                                        <td>"Aaj mausam kaisa hai?"</td>
+                                        <td>"આજનું હવામાન કેવું છે?"</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Time & Date</strong></td>
+                                        <td>"What time is it?"</td>
+                                        <td>"Kitne baje hain?"</td>
+                                        <td>"કેટલા વાગ્યા છે?"</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Android Bridge Diagnostics -->
+                        <div class="settings-card glass-card">
+                            <h3 class="settings-card-title">
+                                <span>📱</span>
+                                <span data-i18n="androidBridgeStatus">Android Bridge Diagnostics</span>
+                            </h3>
+                            <div class="settings-row">
+                                <div class="settings-label-wrap">
+                                    <div class="settings-label">Runtime Environment</div>
+                                    <div class="settings-desc">Host container executing web app</div>
+                                </div>
+                                <span id="diag-bridge-mode" style="font-size: 13px; font-weight: 700;">Web Browser Sandbox</span>
+                            </div>
+                            <div class="settings-row">
+                                <div class="settings-label-wrap">
+                                    <div class="settings-label">Bridge Connectivity</div>
+                                    <div class="settings-desc">JavaScript Interface 'window.VoxaAndroidBridge'</div>
+                                </div>
+                                <span id="diag-bridge-status" class="badge badge-orange">Browser Web Fallback Active</span>
+                            </div>
+                            <div class="settings-row">
+                                <div class="settings-label-wrap">
+                                    <div class="settings-label">Kotlin Bridge Interface Version</div>
+                                </div>
+                                <span id="diag-bridge-version" style="font-size: 13px; font-weight: 600;">1.0.0 (Native)</span>
+                            </div>
+                            <div class="settings-row">
+                                <div class="settings-label-wrap">
+                                    <div class="settings-label">Device Battery Level</div>
+                                </div>
+                                <span id="diag-battery-level" style="font-size: 14px; font-weight: 700; color: #10B981;">85%</span>
+                            </div>
+                            <div class="settings-row">
+                                <div class="settings-label-wrap">
+                                    <div class="settings-label">Hardware Flashlight Test</div>
+                                    <div class="settings-desc">Triggers CameraManager torch mode</div>
+                                </div>
+                                <button id="btn-test-flashlight" class="btn-secondary-action" style="padding: 6px 14px; font-size: 12px;">Toggle Flashlight</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         MOBILE BOTTOM NAVIGATION BAR
+         ==================================================================== -->
+    <nav class="mobile-bottom-nav">
+        <button class="mobile-nav-item active" data-nav-target="dashboard">
+            <span>📊</span>
+            <span>Home</span>
+        </button>
+        <button class="mobile-nav-item" data-nav-target="contacts">
+            <span>👥</span>
+            <span>Contacts</span>
+        </button>
+        <div class="mobile-nav-mic-item">
+            <button class="mobile-floating-mic trigger-voice-btn" title="Tap to Speak">
+                🎙️
+            </button>
+        </div>
+        <button class="mobile-nav-item" data-nav-target="history">
+            <span>📜</span>
+            <span>History</span>
+        </button>
+        <button class="mobile-nav-item" data-nav-target="chat">
+            <span>💬</span>
+            <span>Chat</span>
+        </button>
+        <button class="mobile-nav-item" data-nav-target="settings">
+            <span>⚙️</span>
+            <span>Settings</span>
+        </button>
+    </nav>
+
+    <!-- ====================================================================
+         MODALS
+         ==================================================================== -->
+
+    <!-- ====================================================================
+         INTERACTIVE ACTION MODALS
+         ==================================================================== -->
+
+    <!-- 1. Call Contact Picker Modal -->
+    <div id="modal-call-picker" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-call-picker-title">
+        <div class="modal-card glass-card modal-card-wide" style="text-align: left;">
+            <div class="modal-header-row">
+                <h3 id="modal-call-picker-title" class="modal-title-h3">📞 Call Contact</h3>
+                <button class="btn-icon" onclick="UI.closeModal('modal-call-picker')" aria-label="Close dialog">✕</button>
+            </div>
+            <p class="modal-desc-sub">Select a contact to initiate a voice call with confirmation.</p>
+
+            <div class="search-input-wrap" style="margin-bottom: 16px;">
+                <input id="call-picker-search-input" class="input-styled" type="text" placeholder="Search contact by name or number..." oninput="Actions.renderCallPickerList(this.value)" aria-label="Search contacts">
+            </div>
+
+            <div id="call-picker-contacts-list" class="picker-contacts-scroll">
+                <!-- Populated dynamically by Actions.renderCallPickerList() -->
+            </div>
+
+            <div class="modal-actions-row" style="margin-top: 18px;">
+                <button class="btn-modal-cancel" onclick="UI.closeModal('modal-call-picker')">Close</button>
+                <button class="btn-primary-action" onclick="UI.closeModal('modal-call-picker'); Navigation.navigateToPage('contacts')" style="margin-left: auto;">
+                    <span>👥</span> Manage All Contacts
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. YouTube Action Modal (Open & Search Hub) -->
+    <div id="modal-youtube-action" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-yt-title">
+        <div class="modal-card glass-card" style="text-align: left;">
+            <div class="modal-header-row">
+                <h3 id="modal-yt-title" class="modal-title-h3" style="color: #FF0000; display: flex; align-items: center; gap: 8px;">
+                    <span>▶️</span> YouTube Assistant
+                </h3>
+                <button class="btn-icon" onclick="UI.closeModal('modal-youtube-action')" aria-label="Close dialog">✕</button>
+            </div>
+            <p class="modal-desc-sub">Launch YouTube directly or search for videos, courses, and tutorials.</p>
+
+            <!-- Direct Launch Button -->
+            <button class="btn-direct-yt glass-card" onclick="Actions.launchYouTubeDirect()">
+                <div class="yt-direct-left">
+                    <span class="yt-play-icon">▶</span>
+                    <div>
+                        <div class="yt-direct-title">Open YouTube</div>
+                        <div class="yt-direct-sub">Launch YouTube app or web home</div>
+                    </div>
+                </div>
+                <span class="yt-arrow">➔</span>
+            </button>
+
+            <!-- Search YouTube Section -->
+            <div style="margin: 20px 0 10px 0;">
+                <label style="font-size: 13px; font-weight: 600; color: var(--text-primary); display: block; margin-bottom: 6px;">
+                    Search YouTube Videos:
+                </label>
+                <form onsubmit="event.preventDefault(); Actions.openYouTube(document.getElementById('youtube-search-input').value); UI.closeModal('modal-youtube-action');" style="display: flex; gap: 8px;">
+                    <input id="youtube-search-input" class="input-styled" type="text" placeholder="Search YouTube (e.g. Python Django Tutorial)..." style="flex: 1;">
+                    <button type="submit" class="btn-primary-action" style="padding: 10px 18px;">
+                        <span>🔍</span> Search
+                    </button>
+                </form>
+            </div>
+
+            <!-- Quick query chips -->
+            <div class="modal-quick-chips">
+                <span class="chip-sm" onclick="Actions.openYouTube('Python Django Tutorial'); UI.closeModal('modal-youtube-action');">Python Django</span>
+                <span class="chip-sm" onclick="Actions.openYouTube('FastAPI Crash Course'); UI.closeModal('modal-youtube-action');">FastAPI Crash Course</span>
+                <span class="chip-sm" onclick="Actions.openYouTube('AI Voice Assistant Web API'); UI.closeModal('modal-youtube-action');">AI Voice Assistant</span>
+            </div>
+
+            <div class="modal-actions-row" style="margin-top: 20px;">
+                <button class="btn-modal-cancel" onclick="UI.closeModal('modal-youtube-action')" style="width: 100%;">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Google Search Modal -->
+    <div id="modal-google-search" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-google-title">
+        <div class="modal-card glass-card" style="text-align: left;">
+            <div class="modal-header-row">
+                <h3 id="modal-google-title" class="modal-title-h3" style="display: flex; align-items: center; gap: 8px;">
+                    <span>🔍</span> Search Google
+                </h3>
+                <button class="btn-icon" onclick="UI.closeModal('modal-google-search')" aria-label="Close dialog">✕</button>
+            </div>
+            <p class="modal-desc-sub">Query the web instantly with accurate URL encoding.</p>
+
+            <form onsubmit="event.preventDefault(); Actions.searchGoogle(document.getElementById('google-search-input').value); UI.closeModal('modal-google-search');" style="margin-bottom: 16px;">
+                <div style="display: flex; gap: 8px;">
+                    <input id="google-search-input" class="input-styled" type="text" placeholder="Enter your search (e.g. Python Django)..." style="flex: 1;" required>
+                    <button type="submit" class="btn-primary-action" style="padding: 10px 20px;">Search</button>
+                </div>
+            </form>
+
+            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">Suggested topics:</div>
+            <div class="modal-quick-chips">
+                <span class="chip-sm" onclick="Actions.searchGoogle('Python Django Tutorial'); UI.closeModal('modal-google-search');">Python Django</span>
+                <span class="chip-sm" onclick="Actions.searchGoogle('FastAPI documentation'); UI.closeModal('modal-google-search');">FastAPI Docs</span>
+                <span class="chip-sm" onclick="Actions.searchGoogle('Web Speech API MDN'); UI.closeModal('modal-google-search');">Web Speech API</span>
+                <span class="chip-sm" onclick="Actions.searchGoogle('Android Kotlin WebView bridge'); UI.closeModal('modal-google-search');">Kotlin WebView</span>
+            </div>
+
+            <div class="modal-actions-row" style="margin-top: 24px;">
+                <button class="btn-modal-cancel" onclick="UI.closeModal('modal-google-search')" style="width: 100%;">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Send Message Modal (WhatsApp / SMS Choice) -->
+    <div id="modal-message-choice" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-msg-choice-title">
+        <div class="modal-card glass-card" style="text-align: left;">
+            <div class="modal-header-row">
+                <h3 id="modal-msg-choice-title" class="modal-title-h3">💬 Send Message</h3>
+                <button class="btn-icon" onclick="UI.closeModal('modal-message-choice')" aria-label="Close dialog">✕</button>
+            </div>
+            <p class="modal-desc-sub">Dispatch a WhatsApp message or SMS text to a contact.</p>
+
+            <div class="msg-type-tabs" style="display: flex; gap: 8px; margin-bottom: 16px;">
+                <button id="tab-msg-wa" class="filter-tab active" onclick="document.getElementById('tab-msg-wa').classList.add('active'); document.getElementById('tab-msg-sms').classList.remove('active'); document.getElementById('btn-dispatch-msg').textContent = 'Open WhatsApp';">
+                    WhatsApp
+                </button>
+                <button id="tab-msg-sms" class="filter-tab" onclick="document.getElementById('tab-msg-sms').classList.add('active'); document.getElementById('tab-msg-wa').classList.remove('active'); document.getElementById('btn-dispatch-msg').textContent = 'Open SMS App';">
+                    SMS
+                </button>
+            </div>
+
+            <div style="margin-bottom: 12px;">
+                <label style="font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 4px;">Recipient Phone Number / Name:</label>
+                <input id="msg-choice-recipient" class="input-styled" type="text" placeholder="e.g. +91 98250 12345 or select contact">
+            </div>
+
+            <div style="margin-bottom: 18px;">
+                <label style="font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 4px;">Message Text:</label>
+                <textarea id="msg-choice-text" class="input-styled" rows="3" style="resize: none;" placeholder="Hello, sending this from Voxa AI assistant!"></textarea>
+            </div>
+
+            <div class="modal-actions-row">
+                <button class="btn-modal-cancel" onclick="UI.closeModal('modal-message-choice')">Cancel</button>
+                <button id="btn-dispatch-msg" class="btn-modal-confirm" onclick="
+                    const isWa = document.getElementById('tab-msg-wa').classList.contains('active');
+                    const phone = document.getElementById('msg-choice-recipient').value;
+                    const text = document.getElementById('msg-choice-text').value;
+                    UI.closeModal('modal-message-choice');
+                    if (isWa) Actions.sendWhatsApp(phone, text);
+                    else Actions.sendSMS(phone, text);
+                ">
+                    Open WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. Maps & Navigation Modal -->
+    <div id="modal-maps-action" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-maps-title">
+        <div class="modal-card glass-card" style="text-align: left;">
+            <div class="modal-header-row">
+                <h3 id="modal-maps-title" class="modal-title-h3" style="display: flex; align-items: center; gap: 8px;">
+                    <span>🗺️</span> Google Maps Navigation
+                </h3>
+                <button class="btn-icon" onclick="UI.closeModal('modal-maps-action')" aria-label="Close dialog">✕</button>
+            </div>
+            <p class="modal-desc-sub">Search a destination or launch navigation from your location.</p>
+
+            <form onsubmit="event.preventDefault(); Actions.openMaps(document.getElementById('maps-destination-input').value); UI.closeModal('modal-maps-action');" style="margin-bottom: 14px;">
+                <label style="font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 4px;">Destination / Address:</label>
+                <div style="display: flex; gap: 8px;">
+                    <input id="maps-destination-input" class="input-styled" type="text" placeholder="Enter destination (e.g. Ahmedabad)..." style="flex: 1;" required>
+                    <button type="submit" class="btn-primary-action" style="padding: 10px 18px;">
+                        <span>🚗</span> Navigate
+                    </button>
+                </div>
+            </form>
+
+            <button class="btn-secondary-action" onclick="Actions.openCurrentLocationMaps()" style="width: 100%; justify-content: center; margin-bottom: 16px;">
+                <span>📍</span> Open Maps for Current Location
+            </button>
+
+            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">Quick destinations:</div>
+            <div class="modal-quick-chips">
+                <span class="chip-sm" onclick="Actions.openMaps('Ahmedabad'); UI.closeModal('modal-maps-action');">Ahmedabad</span>
+                <span class="chip-sm" onclick="Actions.openMaps('Mumbai'); UI.closeModal('modal-maps-action');">Mumbai</span>
+                <span class="chip-sm" onclick="Actions.openMaps('Delhi'); UI.closeModal('modal-maps-action');">Delhi</span>
+                <span class="chip-sm" onclick="Actions.openMaps('Bengaluru'); UI.closeModal('modal-maps-action');">Bengaluru</span>
+            </div>
+
+            <div class="modal-actions-row" style="margin-top: 20px;">
+                <button class="btn-modal-cancel" onclick="UI.closeModal('modal-maps-action')" style="width: 100%;">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. Add Favorite Shortcut Modal -->
+    <div id="modal-add-favorite" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-add-fav-title">
+        <div class="modal-card glass-card" style="text-align: left;">
+            <div class="modal-header-row">
+                <h3 id="modal-add-fav-title" class="modal-title-h3">⭐ Add Favorite Shortcut</h3>
+                <button class="btn-icon" onclick="UI.closeModal('modal-add-favorite')" aria-label="Close dialog">✕</button>
+            </div>
+            <p class="modal-desc-sub">Add a 1-tap voice command shortcut to your dashboard.</p>
+
+            <div style="margin-bottom: 12px;">
+                <label style="font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 4px;">Choose an Action Preset (Optional):</label>
+                <select id="shortcut-preset-select" class="select-styled" style="width: 100%;" onchange="
+                    const val = this.value;
+                    if (val === 'call') { document.getElementById('shortcut-title-input').value = 'Call Mom'; document.getElementById('shortcut-cmd-input').value = 'Call Mom'; }
+                    else if (val === 'yt') { document.getElementById('shortcut-title-input').value = 'Open YouTube'; document.getElementById('shortcut-cmd-input').value = 'Open YouTube'; }
+                    else if (val === 'maps') { document.getElementById('shortcut-title-input').value = 'Navigate to Ahmedabad'; document.getElementById('shortcut-cmd-input').value = 'Navigate to Ahmedabad'; }
+                    else if (val === 'google') { document.getElementById('shortcut-title-input').value = 'Search Python'; document.getElementById('shortcut-cmd-input').value = 'Search Google for Python'; }
+                ">
+                    <option value="">-- Choose a Preset or Enter Custom --</option>
+                    <option value="call">📞 Call Mom</option>
+                    <option value="yt">▶️ Open YouTube</option>
+                    <option value="maps">🗺️ Navigate to Ahmedabad</option>
+                    <option value="google">🔍 Search Python</option>
+                </select>
+            </div>
+
+            <div style="margin-bottom: 12px;">
+                <label style="font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 4px;">Shortcut Name / Title:</label>
+                <input id="shortcut-title-input" class="input-styled" type="text" placeholder="e.g. Call Rahul">
+            </div>
+
+            <div style="margin-bottom: 18px;">
+                <label style="font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 4px;">Voice Command to Execute:</label>
+                <input id="shortcut-cmd-input" class="input-styled" type="text" placeholder="e.g. Call Rahul">
+            </div>
+
+            <div class="modal-actions-row">
+                <button class="btn-modal-cancel" onclick="UI.closeModal('modal-add-favorite')">Cancel</button>
+                <button class="btn-modal-confirm" onclick="
+                    const t = document.getElementById('shortcut-title-input').value;
+                    const c = document.getElementById('shortcut-cmd-input').value;
+                    if (c && window.FavoritesManager) {
+                        window.FavoritesManager.addFavorite(t, c);
+                        UI.closeModal('modal-add-favorite');
+                    } else {
+                        UI.showToast('warning', 'Please provide a command to run.');
+                    }
+                ">
+                    Save Shortcut
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7. Call Confirmation Modal (Strict user confirmation before dialer) -->
+    <div id="modal-call-confirm" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-call-name">
+        <div class="modal-card glass-card">
+            <div id="modal-call-avatar" class="modal-avatar-big">📞</div>
+            <h3 id="modal-call-name" class="modal-name-h3">Call Contact</h3>
+            <p id="modal-call-phone" class="modal-phone-p" style="display: none;"></p>
+            <p id="modal-call-prompt-text" style="font-size: 15px; color: var(--text-primary); margin-bottom: 24px; white-space: pre-line;">
+                Do you want to start a phone call?
+            </p>
+            <div class="modal-actions-row">
+                <button id="modal-call-cancel-btn" class="btn-modal-cancel" data-i18n="cancelBtn">Cancel</button>
+                <button id="modal-call-confirm-btn" class="btn-modal-confirm" data-i18n="confirmCallBtn">Call</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Contact Modal -->
+    <div id="modal-add-contact" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true">
+        <div class="modal-card glass-card" style="text-align: left;">
+            <div class="modal-header-row">
+                <h3 class="modal-name-h3" style="text-align: left; margin-bottom: 0;">Add New Contact</h3>
+                <button class="btn-icon" onclick="UI.closeModal('modal-add-contact')" aria-label="Close dialog">✕</button>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 12px; margin: 16px 0 20px 0;">
+                <div>
+                    <label style="font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 4px;">Full Name *</label>
+                    <input id="input-new-contact-name" class="input-styled" type="text" placeholder="e.g. Rahul Sharma" required>
+                </div>
+                <div>
+                    <label style="font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 4px;">Phone Number *</label>
+                    <input id="input-new-contact-phone" class="input-styled" type="tel" placeholder="e.g. +91 98250 12345" required>
+                </div>
+                <div>
+                    <label style="font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 4px;">Relationship / Label</label>
+                    <input id="input-new-contact-rel" class="input-styled" type="text" placeholder="e.g. Friend, Family, Work">
+                </div>
+                <div>
+                    <label style="font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 4px;">Email (Optional)</label>
+                    <input id="input-new-contact-email" class="input-styled" type="email" placeholder="e.g. rahul@example.com">
+                </div>
+            </div>
+
+            <div class="modal-actions-row">
+                <button id="modal-contact-cancel-btn" class="btn-modal-cancel" onclick="UI.closeModal('modal-add-contact')">Cancel</button>
+                <button id="modal-contact-save-btn" class="btn-modal-confirm">Save Contact</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="voxa-toast-container" role="region" aria-live="polite"></div>
+
+    <!-- Modular Scripts in Proper Dependency Order -->
+    <script src="js/i18n.js"></script>
+    <script src="js/android-bridge.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/visualizer.js"></script>
+    <script src="js/voice.js"></script>
+    <script src="js/contacts.js"></script>
+    <script src="js/history.js"></script>
+    <script src="js/favorites.js"></script>
+    <script src="js/actions.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/commands.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
